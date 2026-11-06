@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Gateway>
+  <!-- Simulator: run FieldGateway.Simulator.exe 1502 -->
+  <Device id="PLC1" name="Boiler PLC" ip="127.0.0.1" port="1502" unit="1" poll="500" password="maint2012">
+    <Tag name="Temperature" address="100" length="1" input="true" scale="0.1" unit="degC" />
+    <Tag name="Pressure" address="101" length="1" input="true" scale="1" unit="mbar" />
+    <Tag name="MotorSpeed" address="102" length="1" input="true" scale="1" unit="rpm" />
+    <Tag name="Setpoint" address="10" length="1" scale="0.1" unit="degC" writable="true" />
+  </Device>
+</Gateway>

@@ -1,0 +1,298 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:781c6597-8c94-50d2-8a4a-1929cd5503d2",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-06T19:36:14+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "indusoft-sbom.py",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "app:Indusoft.FieldGateway",
+      "name": "Indusoft.FieldGateway",
+      "version": "3.0.0",
+      "supplier": {
+        "name": "Indusoft Automation"
+      }
+    },
+    "properties": [
+      {
+        "name": "indusoft:scope",
+        "value": "direct dependencies (declared); transitive graph via dotnet-CycloneDX in CI"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/coverlet.collector@6.0.4",
+      "name": "coverlet.collector",
+      "version": "6.0.4",
+      "scope": "optional",
+      "purl": "pkg:nuget/coverlet.collector@6.0.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Tests"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.AspNetCore.Authentication.Certificate@10.0.14",
+      "name": "Microsoft.AspNetCore.Authentication.Certificate",
+      "version": "10.0.14",
+      "scope": "required",
+      "purl": "pkg:nuget/Microsoft.AspNetCore.Authentication.Certificate@10.0.14",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Data.SqlClient@6.1.1",
+      "name": "Microsoft.Data.SqlClient",
+      "version": "6.1.1",
+      "scope": "required",
+      "purl": "pkg:nuget/Microsoft.Data.SqlClient@6.1.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Extensions.Hosting.Systemd@10.0.14",
+      "name": "Microsoft.Extensions.Hosting.Systemd",
+      "version": "10.0.14",
+      "scope": "required",
+      "purl": "pkg:nuget/Microsoft.Extensions.Hosting.Systemd@10.0.14",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Extensions.Hosting.WindowsServices@10.0.14",
+      "name": "Microsoft.Extensions.Hosting.WindowsServices",
+      "version": "10.0.14",
+      "scope": "required",
+      "purl": "pkg:nuget/Microsoft.Extensions.Hosting.WindowsServices@10.0.14",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Extensions.Logging.Abstractions@10.0.14",
+      "name": "Microsoft.Extensions.Logging.Abstractions",
+      "version": "10.0.14",
+      "scope": "required",
+      "purl": "pkg:nuget/Microsoft.Extensions.Logging.Abstractions@10.0.14",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.Extensions.Options@10.0.14",
+      "name": "Microsoft.Extensions.Options",
+      "version": "10.0.14",
+      "scope": "required",
+      "purl": "pkg:nuget/Microsoft.Extensions.Options@10.0.14",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Microsoft.NET.Test.Sdk@17.14.1",
+      "name": "Microsoft.NET.Test.Sdk",
+      "version": "17.14.1",
+      "scope": "optional",
+      "purl": "pkg:nuget/Microsoft.NET.Test.Sdk@17.14.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Tests"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/xunit@2.9.3",
+      "name": "xunit",
+      "version": "2.9.3",
+      "scope": "optional",
+      "purl": "pkg:nuget/xunit@2.9.3",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Tests"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/xunit.runner.visualstudio@3.1.4",
+      "name": "xunit.runner.visualstudio",
+      "version": "3.1.4",
+      "scope": "optional",
+      "purl": "pkg:nuget/xunit.runner.visualstudio@3.1.4",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Tests"
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "runtime:aspnetcore",
+      "name": "ASP.NET Core Runtime",
+      "version": "10.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "indusoft:tfm",
+          "value": "aspnetcore"
+        },
+        {
+          "name": "indusoft:endOfSupport",
+          "value": "2028-11-14"
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "runtime:net10.0",
+      "name": ".NET",
+      "version": "10.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "indusoft:tfm",
+          "value": "net10.0"
+        },
+        {
+          "name": "indusoft:endOfSupport",
+          "value": "2028-11-14"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "app:Indusoft.FieldGateway",
+      "dependsOn": [
+        "pkg:nuget/coverlet.collector@6.0.4",
+        "pkg:nuget/Microsoft.AspNetCore.Authentication.Certificate@10.0.14",
+        "pkg:nuget/Microsoft.Data.SqlClient@6.1.1",
+        "pkg:nuget/Microsoft.Extensions.Hosting.Systemd@10.0.14",
+        "pkg:nuget/Microsoft.Extensions.Hosting.WindowsServices@10.0.14",
+        "pkg:nuget/Microsoft.Extensions.Logging.Abstractions@10.0.14",
+        "pkg:nuget/Microsoft.Extensions.Options@10.0.14",
+        "pkg:nuget/Microsoft.NET.Test.Sdk@17.14.1",
+        "pkg:nuget/xunit@2.9.3",
+        "pkg:nuget/xunit.runner.visualstudio@3.1.4",
+        "runtime:aspnetcore",
+        "runtime:net10.0"
+      ]
+    }
+  ]
+}

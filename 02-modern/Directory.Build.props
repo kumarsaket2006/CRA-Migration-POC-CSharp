@@ -1,0 +1,38 @@
+<Project>
+  <!-- Solution-wide build policy (CRA Annex I Part I: secure development, state-of-the-art tooling) -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <!-- Static analysis: all built-in .NET security rules (CA2100, CA2300-CA2330, CA3001-CA3012, CA5350-CA5405) as errors -->
+    <AnalysisLevel>latest</AnalysisLevel>
+    <AnalysisModeSecurity>All</AnalysisModeSecurity>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+
+    <!-- NuGet Audit: fail the build on any known-vulnerable direct or transitive package (GitHub Advisory Database) -->
+    <NuGetAudit>true</NuGetAudit>
+    <NuGetAuditMode>all</NuGetAuditMode>
+    <NuGetAuditLevel>low</NuGetAuditLevel>
+    <WarningsAsErrors>$(WarningsAsErrors);NU1901;NU1902;NU1903;NU1904</WarningsAsErrors>
+
+    <!-- Reproducible, traceable builds -->
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true' or '$(TF_BUILD)' == 'true'">true</ContinuousIntegrationBuild>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(CI)' == 'true' or '$(TF_BUILD)' == 'true'">true</RestoreLockedMode>
+    <InvariantGlobalization>true</InvariantGlobalization>
+
+    <Company>Indusoft Automation</Company>
+    <Product>FieldGateway</Product>
+    <Copyright>Copyright © Indusoft Automation 2026</Copyright>
+    <Version>3.0.0</Version>
+  </PropertyGroup>
+
+  <!-- Strong-name signing when the key is provisioned by CI (key is never committed) -->
+  <PropertyGroup Condition="Exists('$(MSBuildThisFileDirectory)build\keys\FieldGateway.snk')">
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>$(MSBuildThisFileDirectory)build\keys\FieldGateway.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+</Project>

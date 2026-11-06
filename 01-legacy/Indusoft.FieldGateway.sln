@@ -1,0 +1,35 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldGateway.Core", "src\FieldGateway.Core\FieldGateway.Core.csproj", "{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B01}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldGateway.Service", "src\FieldGateway.Service\FieldGateway.Service.csproj", "{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B02}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldGateway.Simulator", "src\FieldGateway.Simulator\FieldGateway.Simulator.csproj", "{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FieldGateway.Tests", "tests\FieldGateway.Tests\FieldGateway.Tests.csproj", "{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B02}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B02}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B02}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B02}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A1C3F0E-2B4D-4C7A-9E51-0F3D7C2A1B04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

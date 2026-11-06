@@ -1,0 +1,18 @@
+[
+  {"id": "MR-F01", "severity": "MEDIUM", "issue": "RESIDUAL", "cwe": "CWE-306", "cra": "Annex I Part I (2)(d)(j)", "status": "accepted-with-compensating-controls",
+   "title": "Modbus TCP field protocol is unauthenticated by design",
+   "detail": "The southbound Modbus/TCP link cannot authenticate or integrity-protect frames. Compensating controls: gateway acts as the only conduit into the cell zone (IEC 62443-3-3 zones/conduits), simulator/devices bound to the control VLAN, strict response validation in ModbusFrame. Roadmap: Modbus/TCP Security (TLS, port 802) for devices that support it.",
+   "location": "src/FieldGateway.Core/Modbus"},
+  {"id": "MR-F02", "severity": "LOW", "issue": "RESIDUAL", "cwe": "CWE-494", "cra": "Annex I Part I (2)(c)", "status": "out-of-scope",
+   "title": "Device-side firmware authenticity depends on the device bootloader",
+   "detail": "The gateway verifies signature, model binding and anti-rollback before staging. The final flash step must be verified again by the device (secure boot); this belongs to the device's own CRA assessment.",
+   "location": "src/FieldGateway.Core/Firmware"},
+  {"id": "MR-F03", "severity": "LOW", "issue": "RESIDUAL", "cwe": "CWE-324", "cra": "Annex I Part I (2)(d)", "status": "mitigated-by-process",
+   "title": "Client certificate allow-list requires lifecycle management",
+   "detail": "Certificate rotation, revocation (CRL/OCSP reachable from the OT network) and allow-list updates are documented in the secure configuration guide; an expired or revoked certificate fails closed.",
+   "location": "src/FieldGateway.Service/Security"},
+  {"id": "MR-F04", "severity": "LOW", "issue": "RESIDUAL", "cwe": "CWE-320", "cra": "Annex I Part I (2)(e)", "status": "open-production-action",
+   "title": "Firmware/license signing key held as PEM in the POC",
+   "detail": "fg-sign reads a PEM private key for demonstration. Production signing must use an HSM / Azure Key Vault key with dual control; only public keys are deployed to gateways.",
+   "location": "tools/FieldGateway.FirmwareSigner"}
+]

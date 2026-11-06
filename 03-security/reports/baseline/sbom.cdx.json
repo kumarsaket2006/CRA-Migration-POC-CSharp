@@ -1,0 +1,188 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "serialNumber": "urn:uuid:68609bcc-2088-5f64-97f6-68136cbea866",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-06T19:34:30+00:00",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "name": "indusoft-sbom.py",
+          "version": "1.0.0"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "app:Indusoft.FieldGateway",
+      "name": "Indusoft.FieldGateway",
+      "version": "2.3.0",
+      "supplier": {
+        "name": "Indusoft Automation"
+      }
+    },
+    "properties": [
+      {
+        "name": "indusoft:scope",
+        "value": "direct dependencies (declared); transitive graph via dotnet-CycloneDX in CI"
+      }
+    ]
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/log4net@1.2.10",
+      "name": "log4net",
+      "version": "1.2.10",
+      "scope": "required",
+      "purl": "pkg:nuget/log4net@1.2.10",
+      "licenses": [
+        {
+          "license": {
+            "id": "Apache-2.0"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Core, FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/Newtonsoft.Json@9.0.1",
+      "name": "Newtonsoft.Json",
+      "version": "9.0.1",
+      "scope": "required",
+      "purl": "pkg:nuget/Newtonsoft.Json@9.0.1",
+      "licenses": [
+        {
+          "license": {
+            "id": "MIT"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Core, FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/NUnit@2.6.4",
+      "name": "NUnit",
+      "version": "2.6.4",
+      "scope": "optional",
+      "purl": "pkg:nuget/NUnit@2.6.4",
+      "licenses": [
+        {
+          "license": {
+            "name": "LicenseRef-NUnit-2.6"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Tests"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/SharpZipLib@0.86.0",
+      "name": "SharpZipLib",
+      "version": "0.86.0",
+      "scope": "required",
+      "purl": "pkg:nuget/SharpZipLib@0.86.0",
+      "licenses": [
+        {
+          "license": {
+            "id": "GPL-2.0-with-classpath-exception"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Core"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:nuget/System.Net.Http@4.3.0",
+      "name": "System.Net.Http",
+      "version": "4.3.0",
+      "scope": "required",
+      "purl": "pkg:nuget/System.Net.Http@4.3.0",
+      "licenses": [
+        {
+          "license": {
+            "name": "LicenseRef-MS-NET-Library"
+          }
+        }
+      ],
+      "properties": [
+        {
+          "name": "indusoft:usedBy",
+          "value": "FieldGateway.Service"
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "runtime:net40",
+      "name": ".NET Framework",
+      "version": "4.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "indusoft:tfm",
+          "value": "net40"
+        },
+        {
+          "name": "indusoft:endOfSupport",
+          "value": "2016-01-12"
+        }
+      ]
+    },
+    {
+      "type": "platform",
+      "bom-ref": "runtime:net45",
+      "name": ".NET Framework",
+      "version": "4.5",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "indusoft:tfm",
+          "value": "net45"
+        },
+        {
+          "name": "indusoft:endOfSupport",
+          "value": "2016-01-12"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "app:Indusoft.FieldGateway",
+      "dependsOn": [
+        "pkg:nuget/log4net@1.2.10",
+        "pkg:nuget/Newtonsoft.Json@9.0.1",
+        "pkg:nuget/NUnit@2.6.4",
+        "pkg:nuget/SharpZipLib@0.86.0",
+        "pkg:nuget/System.Net.Http@4.3.0",
+        "runtime:net40",
+        "runtime:net45"
+      ]
+    }
+  ]
+}

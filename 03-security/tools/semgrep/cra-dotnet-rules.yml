@@ -1,0 +1,233 @@
+rules:
+  # ---------------- Insecure deserialization ----------------
+  - id: cra.csharp.binaryformatter
+    languages: [csharp]
+    severity: ERROR
+    message: BinaryFormatter is unsafe for any input and removed in .NET 9+. Use System.Text.Json with explicit types.
+    metadata: {cwe: "CWE-502", cra: "Annex I Part I (2)(f) integrity", category: deserialization}
+    pattern-either:
+      - pattern: new BinaryFormatter()
+      - pattern: new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter()
+      - pattern: new NetDataContractSerializer()
+      - pattern: new SoapFormatter()
+
+  - id: cra.csharp.json-typenamehandling
+    languages: [csharp]
+    severity: ERROR
+    message: Newtonsoft TypeNameHandling other than None lets the payload choose CLR types (deserialization gadget RCE).
+    metadata: {cwe: "CWE-502", cra: "Annex I Part I (2)(f)", category: deserialization}
+    patterns:
+      - pattern: TypeNameHandling = TypeNameHandling.$X
+      - metavariable-regex: {metavariable: $X, regex: "^(All|Auto|Objects|Arrays)$"}
+
+  # ---------------- XML ----------------
+  - id: cra.csharp.xxe-resolver
+    languages: [csharp]
+    severity: ERROR
+    message: XML parser configured with an XmlUrlResolver / DTD parsing - XXE and entity-expansion DoS.
+    metadata: {cwe: "CWE-611", cra: "Annex I Part I (2)(j) attack surface", category: xml}
+    pattern-either:
+      - pattern: $D.XmlResolver = new XmlUrlResolver()
+      - pattern: DtdProcessing = DtdProcessing.Parse
+      - pattern: $S.DtdProcessing = DtdProcessing.Parse
+      - pattern: $S.ProhibitDtd = false
+
+  # ---------------- Cryptography ----------------
+  - id: cra.csharp.weak-hash
+    languages: [csharp]
+    severity: WARNING
+    message: MD5/SHA1 are broken for integrity/authenticity. Use SHA-256+ and a digital signature for authenticity.
+    metadata: {cwe: "CWE-328", cra: "Annex I Part I (2)(e)(f) state-of-the-art crypto", category: crypto}
+    pattern-either:
+      - pattern: MD5.Create()
+      - pattern: SHA1.Create()
+      - pattern: new MD5CryptoServiceProvider()
+      - pattern: new SHA1CryptoServiceProvider()
+      - pattern: new SHA1Managed()
+      - pattern: MD5.HashData(...)
+      - pattern: SHA1.HashData(...)
+
+  - id: cra.csharp.weak-cipher
+    languages: [csharp]
+    severity: ERROR
+    message: DES/3DES/RC2 are obsolete ciphers. Use AES-GCM (AesGcm) or DPAPI/Data Protection for secrets at rest.
+    metadata: {cwe: "CWE-327", cra: "Annex I Part I (2)(e)", category: crypto}
+    pattern-either:
+      - pattern: new DESCryptoServiceProvider()
+      - pattern: DES.Create()
+      - pattern: new TripleDESCryptoServiceProvider()
+      - pattern: TripleDES.Create()
+      - pattern: new RC2CryptoServiceProvider()
+
+  - id: cra.csharp.hardcoded-crypto-key
+    languages: [csharp]
+    severity: ERROR
+    message: Cryptographic key/IV derived from a string literal in source.
+    metadata: {cwe: "CWE-321", cra: "Annex I Part I (2)(e)", category: secrets}
+    patterns:
+      - pattern: $T $K = Encoding.$E.GetBytes("...");
+      - metavariable-regex: {metavariable: $K, regex: "(?i).*(key|iv|secret|salt)"}
+
+  - id: cra.csharp.hardcoded-secret
+    languages: [csharp]
+    severity: ERROR
+    message: Secret/password literal embedded in source code.
+    metadata: {cwe: "CWE-798", cra: "Annex I Part I (2)(d)(e)", category: secrets}
+    patterns:
+      - pattern-either:
+          - pattern: const string $N = "...";
+          - pattern: static readonly string $N = "...";
+      - metavariable-regex: {metavariable: $N, regex: "(?i).*(secret|password|passwd|pwd|apikey|api_key|token)"}
+
+  # ---------------- Injection ----------------
+  - id: cra.csharp.sql-concat
+    languages: [csharp]
+    severity: ERROR
+    message: SQL statement built by string concatenation - use parameterized commands.
+    metadata: {cwe: "CWE-89", cra: "Annex I Part I (2)(f)", category: injection}
+    pattern-either:
+      - patterns:
+          - pattern: |
+              string $S = "$Q" + ...;
+              ...
+              new $CMD($S, ...);
+          - metavariable-regex: {metavariable: $Q, regex: "(?i)^\\s*(select|insert|update|delete)\\b"}
+      - patterns:
+          - pattern: new $CMD("$Q" + ..., ...)
+          - metavariable-regex: {metavariable: $Q, regex: "(?i)^\\s*(select|insert|update|delete)\\b"}
+
+  - id: cra.csharp.path-traversal-combine
+    languages: [csharp]
+    severity: ERROR
+    message: Path.Combine with an archive entry name or caller-supplied file name without canonicalisation check (Zip-Slip / traversal).
+    metadata: {cwe: "CWE-22", cra: "Annex I Part I (2)(f)", category: path}
+    patterns:
+      - pattern-either:
+          - pattern: Path.Combine($DIR, $E.Name)
+          - pattern: Path.Combine($DIR, $E.FullName)
+          - pattern: Path.Combine($DIR, fileName)
+      - pattern-not-inside: |
+          $P = Path.GetFullPath(Path.Combine(...));
+          ...
+      - pattern-not-inside: Path.GetFullPath(Path.Combine(...))
+
+  # ---------------- Transport security ----------------
+  - id: cra.csharp.cert-validation-disabled
+    languages: [csharp]
+    severity: ERROR
+    message: TLS certificate validation disabled.
+    metadata: {cwe: "CWE-295", cra: "Annex I Part I (2)(e)", category: tls}
+    pattern-either:
+      - pattern: |
+          ServicePointManager.ServerCertificateValidationCallback = delegate(...) { return true; };
+      - pattern: ServicePointManager.ServerCertificateValidationCallback = (...) => true
+      - pattern: $H.ServerCertificateCustomValidationCallback = (...) => true
+      - pattern: HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+
+  - id: cra.csharp.legacy-tls
+    languages: [csharp]
+    severity: ERROR
+    message: SSL3/TLS1.0/TLS1.1 forced. Leave protocol selection to the OS (TLS 1.2/1.3).
+    metadata: {cwe: "CWE-326", cra: "Annex I Part I (2)(e)", category: tls}
+    pattern-either:
+      - pattern: SecurityProtocolType.Ssl3
+      - pattern: SecurityProtocolType.Tls
+      - pattern: SecurityProtocolType.Tls11
+      - pattern: SslProtocols.Tls
+      - pattern: SslProtocols.Tls11
+
+  - id: cra.csharp.secret-in-url
+    languages: [csharp]
+    severity: WARNING
+    message: Credential passed in a URL query string (ends up in proxy/server logs).
+    metadata: {cwe: "CWE-598", cra: "Annex I Part I (2)(e)", category: secrets}
+    pattern-regex: '"\?(api_?key|token|password)="'
+
+  # ---------------- Logging / error handling ----------------
+  - id: cra.csharp.sensitive-log
+    languages: [csharp]
+    severity: WARNING
+    message: Log message appears to contain credentials or keys.
+    metadata: {cwe: "CWE-532", cra: "Annex I Part I (2)(e)", category: logging}
+    patterns:
+      - pattern-either:
+          - pattern: $L.$M("$S" + ...)
+          - pattern: $L.$M(string.Format("$S", ...))
+      - metavariable-regex: {metavariable: $M, regex: "^(Debug|Info|Warn|Error|Fatal|Log\\w*)$"}
+      - metavariable-regex: {metavariable: $S, regex: "(?i).*(password|pwd|apikey|api key|secret|with key|token)"}
+
+  - id: cra.csharp.empty-catch
+    languages: [csharp]
+    severity: WARNING
+    message: Exception swallowed without logging - security-relevant failures become invisible.
+    metadata: {cwe: "CWE-390", cra: "Annex I Part I (2)(l) security monitoring", category: logging}
+    patterns:
+      - pattern-either:
+          - pattern: try { ... } catch { }
+          - pattern: try { ... } catch ($T) { }
+          - pattern: try { ... } catch ($T $V) { }
+      # cooperative cancellation is control flow, not an error
+      - pattern-not: try { ... } catch (OperationCanceledException) { }
+      - pattern-not: try { ... } catch (OperationCanceledException $V) { }
+
+  # ---------------- Platform / migration blockers ----------------
+  - id: cra.csharp.thread-abort
+    languages: [csharp]
+    severity: INFO
+    message: Thread.Abort throws PlatformNotSupportedException on .NET 5+. Use CancellationToken.
+    metadata: {cwe: "CWE-404", category: migration-blocker}
+    patterns:
+      - pattern: $T.Abort()
+      - pattern-inside: |
+          foreach (Thread $T in $C) { ... }
+
+  - id: cra.csharp.windows-only-api
+    languages: [csharp]
+    severity: INFO
+    message: Windows/.NET Framework-only API (Registry, ServiceBase, WCF ServiceHost) - blocks cross-platform .NET 10.
+    metadata: {category: migration-blocker}
+    pattern-either:
+      - pattern: Registry.LocalMachine.OpenSubKey(...)
+      - pattern: new ServiceHost(...)
+      - pattern: ServiceBase.Run(...)
+
+  # ---------------- Configuration files (XML) ----------------
+  - id: cra.config.plaintext-password
+    languages: [generic]
+    paths: {include: ["*.config", "*.xml", "appsettings*.json"]}
+    severity: ERROR
+    message: Plaintext password / key in configuration file.
+    metadata: {cwe: "CWE-256", cra: "Annex I Part I (2)(d)(e)", category: secrets}
+    pattern-regex: '(?i)(key="[^"]*(password|apikey|secret)[^"]*"\s+value="[^"]+"|password=[^;"\s]{3,}|password="[^"]{3,}"|"(password|apikey|secret)"\s*:\s*"[^"]{3,}")'
+
+  - id: cra.config.wcf-security-none
+    languages: [generic]
+    paths: {include: ["*.config"]}
+    severity: ERROR
+    message: WCF binding with security mode None - no transport security or client authentication.
+    metadata: {cwe: "CWE-306", cra: "Annex I Part I (2)(d)", category: authn}
+    pattern-regex: '<security\s+mode="None"'
+
+  - id: cra.config.exception-detail
+    languages: [generic]
+    paths: {include: ["*.config"]}
+    severity: WARNING
+    message: Exception details returned to remote callers.
+    metadata: {cwe: "CWE-209", cra: "Annex I Part I (2)(j)", category: info-disclosure}
+    pattern-regex: 'includeExceptionDetailInFaults="true"'
+
+  - id: cra.config.cleartext-endpoint
+    languages: [generic]
+    paths: {include: ["*.config", "appsettings*.json"]}
+    severity: WARNING
+    message: Cleartext HTTP endpoint (non-loopback) configured.
+    metadata: {cwe: "CWE-319", cra: "Annex I Part I (2)(e)", category: tls}
+    pattern-regex: 'http://(?!localhost|127\.0\.0\.1)[A-Za-z0-9.\-]+'
+
+  - id: cra.config.wildcard-bind
+    languages: [generic]
+    paths: {include: ["*.config", "appsettings*.json"]}
+    severity: WARNING
+    message: Service bound to all interfaces (0.0.0.0) - restrict to the OT management interface.
+    metadata: {cwe: "CWE-1327", cra: "Annex I Part I (2)(j) minimise attack surface", category: exposure}
+    pattern-regex: '(http|https)://(0\.0\.0\.0|\*|\+):'

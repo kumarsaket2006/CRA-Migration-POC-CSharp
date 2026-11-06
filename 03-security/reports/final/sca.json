@@ -1,0 +1,10 @@
+{
+  "tool": "indusoft-sca.py (GitHub Advisory Database, github-reviewed, NuGet)",
+  "advisoryDbPackages": 643,
+  "scannedAt": "2026-11-06T19:36:16+00:00",
+  "sbom": "sbom.cdx.json",
+  "componentsScanned": 12,
+  "summary": {},
+  "total": 0,
+  "findings": []
+}

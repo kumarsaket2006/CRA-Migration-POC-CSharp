@@ -1,0 +1,11 @@
+bin/
+obj/
+packages/
+.vs/
+*.user
+TestResults/
+.cache/
+*.pem
+*.key
+*.snk
+build/keys/

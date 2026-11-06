@@ -1,0 +1,129 @@
+# CRA secure-development pipeline for FieldGateway v3 (.NET 10)
+# Annex I Part II (1)-(3), (7): SBOM per build, vulnerability gates, regular testing, signed releases.
+name: cra-pipeline
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  schedule:
+    - cron: "17 3 * * *"   # nightly re-scan: new CVEs against unchanged code
+
+permissions:
+  contents: read
+
+env:
+  DOTNET_NOLOGO: true
+  DOTNET_CLI_TELEMETRY_OPTOUT: true
+  CI: true
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    defaults: { run: { working-directory: 02-modern } }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { global-json-file: 02-modern/global.json }
+      - name: Restore (locked, NuGet Audit gate)
+        run: dotnet restore Indusoft.FieldGateway.sln
+      - name: Verify package signatures
+        run: dotnet nuget verify --all ~/.nuget/packages/**/*.nupkg | tail -n 5
+      - name: Build (Roslyn security analyzers as errors)
+        run: dotnet build Indusoft.FieldGateway.sln -c Release --no-restore -p:ErrorLog=roslyn.sarif%2Cversion=2.1
+      - name: Test
+        run: dotnet test Indusoft.FieldGateway.sln -c Release --no-build --logger trx --collect "XPlat Code Coverage"
+      - name: Vulnerable packages (direct + transitive) - fail on any
+        run: |
+          dotnet list Indusoft.FieldGateway.sln package --vulnerable --include-transitive --format json > vulnerable.json
+          test "$(jq '[.projects[].frameworks[]?.topLevelPackages[]?, .projects[].frameworks[]?.transitivePackages[]? | select(.vulnerabilities)] | length' vulnerable.json)" = "0"
+      - name: SBOM (CycloneDX, transitive)
+        run: |
+          dotnet tool install --global CycloneDX
+          dotnet CycloneDX Indusoft.FieldGateway.sln --output sbom --filename sbom.cdx.json --output-format Json --exclude-test-projects
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidence-dotnet
+          path: |
+            02-modern/sbom/
+            02-modern/vulnerable.json
+            02-modern/**/TestResults/**
+
+  security-scans:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, security-events: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install -r 03-security/tools/requirements.txt
+      - name: Advisory database snapshot
+        run: git clone --depth 1 --filter=blob:none --sparse https://github.com/github/advisory-database .cache/advisory-database && git -C .cache/advisory-database sparse-checkout set advisories/github-reviewed
+      - name: SBOM + SCA + SAST + secrets
+        run: python 03-security/tools/run_scans.py final 02-modern 3.0.0
+      - name: Gate - no SCA findings, no high SAST, no secrets
+        run: |
+          python - <<'EOF'
+          import json, sys
+          s = json.load(open("03-security/reports/final/summary.json"))
+          high = s["sast"]["bySeverity"].get("HIGH", 0)
+          if s["sca"]["total"] or high or s["secrets"]["total"]:
+              sys.exit(f"CRA gate failed: sca={s['sca']['total']} sast_high={high} secrets={s['secrets']['total']}")
+          EOF
+      - uses: github/codeql-action/upload-sarif@v3
+        with: { sarif_file: 03-security/reports/final/sast-semgrep.sarif, category: semgrep-cra }
+      - uses: actions/upload-artifact@v4
+        with: { name: evidence-scans, path: 03-security/reports/final/ }
+
+  snyk:
+    runs-on: ubuntu-latest
+    permissions: { contents: read, security-events: write }
+    env: { SNYK_TOKEN: "${{ secrets.SNYK_TOKEN }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { global-json-file: 02-modern/global.json }
+      - run: dotnet restore 02-modern/Indusoft.FieldGateway.sln
+      - uses: snyk/actions/setup@master
+        if: env.SNYK_TOKEN != ''
+      - name: Snyk Open Source
+        if: env.SNYK_TOKEN != ''
+        run: snyk test --all-projects --severity-threshold=medium --sarif-file-output=snyk-oss.sarif
+        working-directory: 02-modern
+      - name: Snyk Code
+        if: env.SNYK_TOKEN != ''
+        run: snyk code test --severity-threshold=medium --sarif-file-output=snyk-code.sarif
+        working-directory: 02-modern
+      - uses: github/codeql-action/upload-sarif@v3
+        if: always() && env.SNYK_TOKEN != ''
+        with: { sarif_file: 02-modern/snyk-oss.sarif, category: snyk-oss }
+
+  release:
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: [build-test, security-scans]
+    runs-on: windows-latest
+    permissions: { contents: write, id-token: write, attestations: write }
+    env: { AZURE_CLIENT_ID: "${{ secrets.AZURE_CLIENT_ID }}" }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with: { global-json-file: 02-modern/global.json }
+      - name: Publish
+        run: dotnet publish 02-modern/src/FieldGateway.Service -c Release -r win-x64 --self-contained -o publish
+      # L13: Authenticode signing with an HSM-backed key (Azure Trusted Signing / Key Vault). Configure secrets first.
+      - name: Sign binaries
+        if: env.AZURE_CLIENT_ID != ''
+        uses: azure/trusted-signing-action@v0
+        with:
+          azure-tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          azure-client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          azure-client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
+          endpoint: ${{ secrets.TRUSTED_SIGNING_ENDPOINT }}
+          trusted-signing-account-name: ${{ secrets.TRUSTED_SIGNING_ACCOUNT }}
+          certificate-profile-name: ${{ secrets.TRUSTED_SIGNING_PROFILE }}
+          files-folder: publish
+          files-folder-filter: exe,dll
+      - name: Build provenance (SLSA)
+        uses: actions/attest-build-provenance@v2
+        with: { subject-path: "publish/Indusoft.FieldGateway.*" }

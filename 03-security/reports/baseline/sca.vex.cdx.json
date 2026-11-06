@@ -1,0 +1,281 @@
+{
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.5",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-11-06T19:34:32+00:00",
+    "component": {
+      "type": "application",
+      "bom-ref": "app:Indusoft.FieldGateway",
+      "name": "Indusoft.FieldGateway",
+      "version": "2.3.0",
+      "supplier": {
+        "name": "Indusoft Automation"
+      }
+    }
+  },
+  "vulnerabilities": [
+    {
+      "id": "CVE-2018-1285",
+      "source": {
+        "name": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-2cwj-8chv-9pp9"
+      },
+      "references": [
+        {
+          "id": "GHSA-2cwj-8chv-9pp9",
+          "source": {
+            "name": "GHSA",
+            "url": "https://github.com/advisories/GHSA-2cwj-8chv-9pp9"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "severity": "critical",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H"
+        }
+      ],
+      "cwes": [
+        611
+      ],
+      "description": "XML External Entity attack in log4net",
+      "recommendation": "Upgrade to 2.0.10",
+      "analysis": {
+        "state": "in_triage"
+      },
+      "affects": [
+        {
+          "ref": "pkg:nuget/log4net@1.2.10"
+        }
+      ]
+    },
+    {
+      "id": "EOL-NET40",
+      "source": {
+        "name": "Microsoft Lifecycle",
+        "url": "https://learn.microsoft.com/lifecycle/products/microsoft-net-framework"
+      },
+      "references": [],
+      "ratings": [
+        {
+          "severity": "high"
+        }
+      ],
+      "cwes": [
+        1104
+      ],
+      "description": "Runtime past end of support since 2016-01-12 - no security updates",
+      "recommendation": "Upgrade to .NET 10 (LTS)",
+      "analysis": {
+        "state": "exploitable"
+      },
+      "affects": [
+        {
+          "ref": "runtime:net40"
+        }
+      ]
+    },
+    {
+      "id": "EOL-NET45",
+      "source": {
+        "name": "Microsoft Lifecycle",
+        "url": "https://learn.microsoft.com/lifecycle/products/microsoft-net-framework"
+      },
+      "references": [],
+      "ratings": [
+        {
+          "severity": "high"
+        }
+      ],
+      "cwes": [
+        1104
+      ],
+      "description": "Runtime past end of support since 2016-01-12 - no security updates",
+      "recommendation": "Upgrade to .NET 10 (LTS)",
+      "analysis": {
+        "state": "exploitable"
+      },
+      "affects": [
+        {
+          "ref": "runtime:net45"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2024-21907",
+      "source": {
+        "name": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-5crp-9r3c-p9vr"
+      },
+      "references": [
+        {
+          "id": "GHSA-5crp-9r3c-p9vr",
+          "source": {
+            "name": "GHSA",
+            "url": "https://github.com/advisories/GHSA-5crp-9r3c-p9vr"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "severity": "high",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H"
+        }
+      ],
+      "cwes": [
+        755
+      ],
+      "description": "Improper Handling of Exceptional Conditions in Newtonsoft.Json",
+      "recommendation": "Upgrade to 13.0.1",
+      "analysis": {
+        "state": "in_triage"
+      },
+      "affects": [
+        {
+          "ref": "pkg:nuget/Newtonsoft.Json@9.0.1"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2021-32840",
+      "source": {
+        "name": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-m22m-h4rf-pwq3"
+      },
+      "references": [
+        {
+          "id": "GHSA-m22m-h4rf-pwq3",
+          "source": {
+            "name": "GHSA",
+            "url": "https://github.com/advisories/GHSA-m22m-h4rf-pwq3"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "severity": "high",
+          "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:L/I:H/A:L"
+        }
+      ],
+      "cwes": [
+        22
+      ],
+      "description": "Path Traversal in SharpZipLib",
+      "recommendation": "Upgrade to 1.3.3",
+      "analysis": {
+        "state": "in_triage"
+      },
+      "affects": [
+        {
+          "ref": "pkg:nuget/SharpZipLib@0.86.0"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2018-8292",
+      "source": {
+        "name": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-7jgj-8wvc-jh57"
+      },
+      "references": [
+        {
+          "id": "GHSA-7jgj-8wvc-jh57",
+          "source": {
+            "name": "GHSA",
+            "url": "https://github.com/advisories/GHSA-7jgj-8wvc-jh57"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "severity": "high",
+          "vector": "CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N"
+        }
+      ],
+      "cwes": [
+        200
+      ],
+      "description": ".NET Core Information Disclosure",
+      "recommendation": "Upgrade to 4.3.4",
+      "analysis": {
+        "state": "in_triage"
+      },
+      "affects": [
+        {
+          "ref": "pkg:nuget/System.Net.Http@4.3.0"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2018-1002208",
+      "source": {
+        "name": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-cqj4-m2pc-v9m5"
+      },
+      "references": [
+        {
+          "id": "GHSA-cqj4-m2pc-v9m5",
+          "source": {
+            "name": "GHSA",
+            "url": "https://github.com/advisories/GHSA-cqj4-m2pc-v9m5"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "severity": "medium",
+          "vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:H/A:N"
+        }
+      ],
+      "cwes": [
+        22
+      ],
+      "description": "Improper Limitation of a Pathname to a Restricted Directory in SharpZipLib",
+      "recommendation": "Upgrade to 1.0.0-rc1",
+      "analysis": {
+        "state": "in_triage"
+      },
+      "affects": [
+        {
+          "ref": "pkg:nuget/SharpZipLib@0.86.0"
+        }
+      ]
+    },
+    {
+      "id": "CVE-2026-40021",
+      "source": {
+        "name": "GitHub Advisory Database",
+        "url": "https://github.com/advisories/GHSA-4f7c-pmjv-c25w"
+      },
+      "references": [
+        {
+          "id": "GHSA-4f7c-pmjv-c25w",
+          "source": {
+            "name": "GHSA",
+            "url": "https://github.com/advisories/GHSA-4f7c-pmjv-c25w"
+          }
+        }
+      ],
+      "ratings": [
+        {
+          "severity": "medium",
+          "vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:N"
+        }
+      ],
+      "cwes": [
+        116
+      ],
+      "description": "Apache Log4net: Silent log event loss in XmlLayout and XmlLayoutSchemaLog4J due to unescaped XML 1.0 forbidden characters",
+      "recommendation": "Upgrade to 3.3.0",
+      "analysis": {
+        "state": "in_triage"
+      },
+      "affects": [
+        {
+          "ref": "pkg:nuget/log4net@1.2.10"
+        }
+      ]
+    }
+  ]
+}

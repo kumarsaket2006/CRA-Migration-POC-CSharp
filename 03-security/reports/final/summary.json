@@ -1,0 +1,46 @@
+{
+  "phase": "final",
+  "product": "Indusoft.FieldGateway",
+  "version": "3.0.0",
+  "source": "02-modern",
+  "scannedAt": "2026-11-06T19:36:20+00:00",
+  "tools": {
+    "sbom": "indusoft sbom.py (CycloneDX 1.5)",
+    "sca": "indusoft sca.py + GitHub Advisory Database @ 5194356220 (2026-11-06)",
+    "sast": "semgrep 1.184.0 (CRA .NET rule pack)",
+    "secrets": "detect-secrets 1.5.0"
+  },
+  "sbom": {
+    "components": 12
+  },
+  "sca": {
+    "total": 0,
+    "bySeverity": {}
+  },
+  "sast": {
+    "total": 1,
+    "bySeverity": {
+      "MEDIUM": 1
+    },
+    "errors": 13,
+    "filesScanned": 23,
+    "filesPartiallyParsed": 13
+  },
+  "roslyn": {
+    "projects": 4,
+    "total": 0,
+    "byRule": {}
+  },
+  "secrets": {
+    "total": 0
+  },
+  "manualReview": {
+    "total": 4,
+    "bySeverity": {
+      "MEDIUM": 1,
+      "LOW": 3
+    }
+  },
+  "snyk": null,
+  "dotnet": null
+}

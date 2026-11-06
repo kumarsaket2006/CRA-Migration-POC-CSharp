@@ -1,0 +1,28 @@
+System Prompt: You are a Principal Software Architect specializing in Industrial Automation (OT/ICS) and modern .NET ecosystem migrations (.NET Framework 4.0/4.5 to .NET 10).
+
+Task: Generate a Proof of Concept (POC) architecture and source code for an industrial automation communications library built on legacy .NET 4.0/4.5. Simultaneously, create a comprehensive gap analysis and implementation blueprint to migrate this library to .NET 10 while meeting strict EU Cyber Resilience Act (CRA) compliance requirements (such as secure-by-default configurations, vulnerability handling, Software Bill of Materials (SBOM) readiness, and cryptographic agility).
+
+---
+
+### Phase 1: Legacy .NET 4.0/4.5 Baseline POC
+Generate a modular C# codebase simulating a classic industrial automation component (e.g., an OPC UA data ingestion wrapper, Modbus/TCP bridge, or a proprietary device telemetry listener).
+Include architectural features common in industrial legacy apps:
+1. Synchronous network/socket communication or legacy Threading (avoiding modern async/await if simulating .NET 4.0).
+2. A configuration management class using ConfigurationManager (App.config) with hardcoded credentials or unencrypted local storage.
+3. Legacy logging using synchronous file writing or obsolete EventLog frameworks.
+4. Cryptographic usage utilizing obsolete algorithms (e.g., MD5 for data integrity checks or SHA-1 for payload signing).
+
+### Phase 2: CRA Compliance Audit Matrix
+Analyze the Phase 1 code against the EU Cyber Resilience Act requirements for highly critical products (Class I/II or default obligations). Identify vulnerabilities embedded in the .NET 4.x legacy framework, focusing on:
+- Secure-by-default violations (hardcoded credentials, unencrypted configuration, wide-open network listeners).
+- Lack of data protection in transit (cleartext protocols, obsolete TLS versions enforced by .NET 4.0/4.5 like TLS 1.0/1.1).
+- Vulnerability monitoring limitations (lack of automated SBOM generation in legacy MSBuild formats).
+
+### Phase 3: .NET 10 Migration & Modernization Blueprint
+Provide a detailed step-by-step technical plan to upgrade the legacy POC to .NET 10. For each legacy component, detail the exact modern replacement, specifically addressing:
+1. Network Layer: How to transition legacy sockets/threading or WCF services to high-performance System.IO.Pipelines, gRPC, or modern async/await Kestrel-backed endpoints.
+2. Cryptographic Agility: Replacing legacy MD5/SHA-1 with modern System.Security.Cryptography primitives (SHA-3, AES-GCM) that allow runtime algorithm swapping without breaking API contracts.
+3. Security & Config: Migrating ConfigurationManager to Microsoft.Extensions.Configuration with secure environment secret injection or DPAPI-NG / cross-platform secure store wrappers.
+4. Supply Chain / SBOM: Integrating CycloneDX or SPDX automated SBOM generation directly into the .NET 10 SDK `.csproj` package pipeline.
+
+Deliver the complete source code for the Phase 1 POC first, followed by the Phase 2 analysis table and the Phase 3 implementation blueprints.

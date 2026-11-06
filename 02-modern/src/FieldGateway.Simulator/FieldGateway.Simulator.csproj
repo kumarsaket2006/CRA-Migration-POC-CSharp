@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Indusoft.FieldGateway.Simulator</RootNamespace>
+    <AssemblyName>Indusoft.FieldGateway.Simulator</AssemblyName>
+  </PropertyGroup>
+</Project>
